@@ -9,9 +9,13 @@
         <div class="row align-self-center">
             <div class="col">
                 <h1> Users: </h1>
-                {% for user_id in user %}
+                {% for id in user %}
                     <ul>
-                        <li><a href="{{ url_for('user.get_user', pk=user_id) }}">{{ user[user_id] }}</a></li>
+                        <li>
+                            <a href="{{ url_for('user.get_user', pk=id) }}">
+                                {{ user[id]['fullname'] }}
+                            </a>
+                        </li>
                     </ul>
                 {% endfor %}    </div>
         </div>
