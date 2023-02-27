@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Users list
+{% endblock %}
+
+{% block body %}
+    <div class="container text-start">
+        <div class="row align-self-center">
+            <div class="col">
+                <h1> Users: </h1>
+                {% for id in user %}
+                    <ul>
+                        <li>
+                            <a href="{{ url_for('user.get_user', pk=id) }}">
+                                {{ user[id]['fullname'] }}
+                            </a>
+                        </li>
+                    </ul>
+                {% endfor %}    </div>
+        </div>
+    </div>
+{% endblock %}
