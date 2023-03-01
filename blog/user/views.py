@@ -52,19 +52,24 @@ USERS = {
 
 @user.route('/')
 def user_list():
+    from blog.models import User
+    users = User.query.all()
     return render_template(
         'users/list.html',
-        user=USERS,
+        users=users,
     )
 
 
 @user.route('/<int:pk>')
 def get_user(pk: int):
-    try:
-        user_info = USERS[pk]
-    except KeyError:
-        raise NotFound(f'User ID {pk} not found')
+    from blog.models import User
+
+    _user = User.query.filter_by(id=pk).one_or_none()
+    if not _user:
+        raise NotFound(f'User {pk} not found!')
     return render_template(
         'users/details.html',
-        user_info=user_info,
+        user_info=_user,
     )
+
+
