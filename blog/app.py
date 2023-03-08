@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 
 from blog.auth.views import auth, login_manager
+from blog.extensions import migrate
 from blog.report.views import report
 from blog.user.views import user
 from blog.article.views import article
@@ -20,6 +21,7 @@ def create_app() -> Flask:
     def index():
         return render_template("index.html")
 
+    migrate.init_app(app, db)
     login_manager.init_app(app)
 
     db.init_app(app)
