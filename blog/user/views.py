@@ -1,6 +1,12 @@
-from flask import Blueprint, render_template, redirect
+from flask import Blueprint, render_template, redirect, url_for, request
 from werkzeug.exceptions import NotFound
 from mimesis import Person
+from flask_login import current_user, login_user
+from werkzeug.security import generate_password_hash
+
+from blog.forms.user import UserRegisterForm
+from blog.models import User
+from blog.models.databases import db
 
 user = Blueprint(
     'user',
@@ -50,6 +56,36 @@ USERS = {
 }
 
 
+@user.route('register', method=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('user.details', pk=current_user.id))
+
+    form = UserRegisterForm(request.form)
+    errors = []
+    if request.method == 'POST' and form.validate_on_submit():
+        if User.query.filter_by(email=form.email.data).count():
+            form.email.errors.append('email not uniq!')
+            return render_template('users/register.html', form=form)
+
+    _user = User(
+        email=form.email.data,
+        username=form.username.data,
+        password=generate_password_hash(form.password.data),
+    )
+
+    db.session.add(_user)
+    db.session.commit()
+
+    login_user(_user)
+
+    return render_template(
+        'users/register.html',
+        form=form,
+        errors=errors,
+    )
+
+
 @user.route('/')
 def user_list():
     from blog.models import User
@@ -71,5 +107,3 @@ def get_user(pk: int):
         'users/details.html',
         user_info=_user,
     )
-
-
