@@ -1,5 +1,7 @@
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship
+
 from blog.models.databases import db
 
 
@@ -11,6 +13,8 @@ class User(db.Model, UserMixin):
     password = db.Column(String(255))
     email = db.Column(String(255), unique=True)
     is_staff = db.Column(Boolean, nullable=False, default=False)
+
+    author = relationship('Author', uselist=False, back_populates='user')
 
     def __init__(self, email, username, password):
         self.email = email
