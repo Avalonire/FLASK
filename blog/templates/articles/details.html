@@ -16,6 +16,11 @@
                     <b>Written by</b> {{ article_info['author'] }}
                 </ul>
             </div>
+            <div class="col-6">
+                {% for tag in article.tags %}
+                    <span class="badge bg-primary">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
