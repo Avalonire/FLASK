@@ -1,7 +1,8 @@
 from flask import Flask, render_template
 
+from blog.admin.views import admin_bp
 from blog.auth.views import auth, login_manager
-from blog.extensions import migrate
+from blog.extensions import migrate, admin
 from blog.report.views import report
 from blog.user.views import user
 from blog.article.views import article
@@ -26,6 +27,7 @@ def create_app() -> Flask:
 
     db.init_app(app)
     register_blueprints(app)
+    admin.init_app(app)
     return app
 
 
@@ -34,3 +36,4 @@ def register_blueprints(app: Flask):
     app.register_blueprint(report)
     app.register_blueprint(article)
     app.register_blueprint(auth)
+    app.register_blueprint(admin_bp)
