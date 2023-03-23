@@ -1,4 +1,3 @@
-
 from blog.admin.views import TagAdminView, ArticleAdminView, UserAdminView
 from blog.models import article, user
 from blog.extensions import admin
