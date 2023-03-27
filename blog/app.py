@@ -1,3 +1,5 @@
+from combojsonapi.event import EventPlugin
+from combojsonapi.permission import PermissionPlugin
 from flask import Flask, render_template
 from flask_combo_jsonapi import Api
 
@@ -50,7 +52,10 @@ def register_api(app: Flask):
             create_api_spec_plugin(app)
         ]
     )
-
+    api.plugins = [
+        EventPlugin(),
+        PermissionPlugin(),
+    ]
     api.route(TagList, 'tag_list', '/api/tags/', tag='Tag')
     api.route(TagDetail, 'tag_detail', '/api/tags/<int:id>', tag='Tag')
 
