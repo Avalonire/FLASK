@@ -1,3 +1,4 @@
+from combojsonapi.event import EventPlugin
 from combojsonapi.spec import ApiSpecPlugin
 from flask_combo_jsonapi import Api
 from flask_migrate import Migrate
